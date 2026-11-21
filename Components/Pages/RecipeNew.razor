@@ -1,0 +1,62 @@
+@page "/recipes/new"
+
+<PageTitle>Create a recipe — Recipefy</PageTitle>
+
+<main class="create-page">
+    <header class="create-header">
+        <Brand Class="auth-brand" IconName="ChefHat" />
+        <a class="auth-back" href="/dashboard"><Icon Name="ArrowLeft" Size="15" /> Back to your kitchen</a>
+    </header>
+    <div class="create-wrap">
+        <nav class="detail-breadcrumb" aria-label="Breadcrumb"><a href="/dashboard">Your kitchen</a><span>/</span><span aria-current="page">Create a recipe</span></nav>
+        <section class="create-heading">
+            <div><span class="create-eyebrow">A GOOD THING STARTS HERE</span><h1>Bring your recipe to life.</h1><p>Gather the little details. You can always make it your own later.</p></div>
+            <span class="create-heading-mark"><Icon Name="ChefHat" Size="24" /></span>
+        </section>
+        @* Mock only: fields are not wired to anything yet; "Save recipe" just navigates back to the dashboard. *@
+        <form class="create-form" onsubmit="return false">
+            <section class="create-section">
+                <div class="create-section-title"><span>01</span><div><h2>The basics</h2><p>Give your recipe a name and a little story.</p></div></div>
+                <div class="create-fields">
+                    <label class="create-field create-field-wide"><span>Recipe name <b>*</b></span><input name="title" placeholder="e.g. Sunday tomato pasta" maxlength="100" /></label>
+                    <label class="create-field create-field-wide"><span>A little about it</span><textarea name="description" placeholder="What makes this one special? Share a note, a memory, or a tip…" rows="3" maxlength="500"></textarea><small>Keep it simple and from the heart.</small></label>
+                    <div class="create-field-row">
+                        <label class="create-field"><span>Category <b>*</b></span>
+                            <select name="category">
+                                <option value="" disabled selected>Choose a category</option>
+                                <option>Breakfast</option><option>Lunch</option><option>Dinner</option><option>Dessert</option><option>Snack</option><option>Drinks</option>
+                            </select>
+                        </label>
+                        <label class="create-field"><span><Icon Name="Clock3" Size="14" /> Prep &amp; cook time</span><span class="create-inline-input"><input name="time" type="number" min="1" max="1440" placeholder="30" /><span>minutes</span></span></label>
+                        <label class="create-field"><span><Icon Name="Users" Size="14" /> Servings</span><span class="create-inline-input"><input name="servings" type="number" min="1" max="100" placeholder="4" /><span>people</span></span></label>
+                    </div>
+                </div>
+            </section>
+            <section class="create-section">
+                <div class="create-section-title"><span>02</span><div><h2>Ingredients</h2><p>List what you need, one item at a time.</p></div></div>
+                <div class="create-list">
+                    <div class="create-list-row"><span class="create-list-number">01</span><input aria-label="Ingredient 1" placeholder="e.g. 2 cups cherry tomatoes" /><button type="button" aria-label="Remove ingredient 1" class="create-remove" disabled><Icon Name="Trash2" Size="15" /></button></div>
+                </div>
+                <button type="button" class="create-add-row"><Icon Name="Plus" Size="15" /> Add an ingredient</button>
+            </section>
+            <section class="create-section">
+                <div class="create-section-title"><span>03</span><div><h2>Method</h2><p>Write it down in a way that feels easy to follow.</p></div></div>
+                <div class="create-list create-step-list">
+                    <div class="create-list-row create-step-row"><span class="create-list-number">01</span><textarea aria-label="Step 1" placeholder="What do we do first?" rows="2"></textarea><button type="button" aria-label="Remove step 1" class="create-remove" disabled><Icon Name="Trash2" Size="15" /></button></div>
+                </div>
+                <button type="button" class="create-add-row"><Icon Name="Plus" Size="15" /> Add a step</button>
+            </section>
+            <section class="create-section create-photo-section">
+                <div class="create-section-title"><span>04</span><div><h2>A little eye candy</h2><p>A photo makes your recipe feel like yours.</p></div></div>
+                <label class="create-photo-picker"><span class="create-camera"><Icon Name="Camera" Size="19" /></span><span><strong>Add a cover photo</strong><small>Paste a photo URL for now. Image uploads can be connected later.</small></span><input type="url" name="image" placeholder="https://example.com/your-recipe.jpg" /></label>
+            </section>
+            <div class="create-submit-area">
+                <div class="create-submit-row">
+                    <a href="/dashboard" class="create-cancel">Cancel</a>
+                    <a class="create-submit" href="/dashboard">Save recipe <Icon Name="ArrowRight" Size="16" /></a>
+                </div>
+                <p class="create-save-note">Your recipe is yours. You can edit it any time.</p>
+            </div>
+        </form>
+    </div>
+</main>

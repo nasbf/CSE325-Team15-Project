@@ -1,0 +1,20 @@
+<article class="recipe-card">
+    <div class="recipe-photo">
+        <a class="recipe-image-link" href="/recipes/@Recipe.Slug" aria-label="View @Recipe.Title">
+            <img src="@Recipe.Image" alt="@Recipe.Title" loading="lazy" />
+            <span class="photo-tag @Recipe.Color">@Recipe.Tag</span>
+        </a>
+        <button type="button" class="save-button" aria-label="Save @Recipe.Title"><Icon Name="Heart" Size="17" /></button>
+    </div>
+    <div class="recipe-info">
+        <div class="recipe-meta">
+            <span>@Recipe.Category</span><span class="meta-dot">·</span><span><Icon Name="Clock3" Size="13" />@Recipe.Time</span>
+            <span class="rating"><Icon Name="Star" Size="12" Fill="currentColor" />@Recipe.Rating</span>
+        </div>
+        <h3><a href="/recipes/@Recipe.Slug">@Recipe.Title</a></h3>
+    </div>
+</article>
+
+@code {
+    [Parameter, EditorRequired] public Recipe Recipe { get; set; } = default!;
+}
