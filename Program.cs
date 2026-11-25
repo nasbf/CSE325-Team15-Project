@@ -3,6 +3,7 @@ using Recipefy.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // register the database
@@ -31,6 +32,8 @@ if (!app.Environment.IsDevelopment())
 }
 app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages: true);
 app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseAntiforgery();
 
