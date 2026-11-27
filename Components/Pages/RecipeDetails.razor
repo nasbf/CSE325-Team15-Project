@@ -1,0 +1,79 @@
+@page "/recipes/{Slug}"
+@inject NavigationManager Navigation
+
+@if (recipe is not null)
+{
+    <PageTitle>@recipe.Title — Recipefy</PageTitle>
+
+    <main class="detail-page">
+        <header class="detail-header">
+            <Brand Class="auth-brand" IconName="ChefHat" />
+            <div class="detail-header-actions">
+                <a class="auth-back" href="/dashboard"><Icon Name="ArrowLeft" Size="15" /> Recipe box</a>
+                <a class="detail-signin" href="/sign-in">Sign in <Icon Name="ArrowRight" Size="14" /></a>
+            </div>
+        </header>
+        <div class="detail-wrap">
+            <nav class="detail-breadcrumb" aria-label="Breadcrumb"><a href="/dashboard">Your kitchen</a><span>/</span><span>@recipe.Category</span><span>/</span><span aria-current="page">@recipe.Title</span></nav>
+            <section class="detail-hero">
+                <div class="detail-photo"><img src="@recipe.Image" alt="@recipe.Title" /></div>
+                <div class="detail-intro">
+                    <span class="photo-tag @recipe.Color">@recipe.Tag</span>
+                    <div class="detail-category">@recipe.Category.ToUpperInvariant() <span>·</span> RECIPEFY KITCHEN</div>
+                    <h1>@recipe.Title</h1>
+                    <p class="detail-description">@recipe.Description</p>
+                    <div class="detail-rating"><Icon Name="Star" Size="15" Fill="currentColor" /><strong>@recipe.Rating</strong><span>from the Sage kitchen</span></div>
+                    <div class="detail-facts">
+                        <span><Icon Name="Clock3" Size="17" /><span><small>READY IN</small><b>@recipe.Time</b></span></span>
+                        <span><Icon Name="Users" Size="17" /><span><small>MAKES</small><b>@recipe.Servings servings</b></span></span>
+                    </div>
+                    <div class="detail-actions">
+                        <a class="detail-save" href="/sign-in"><Icon Name="Heart" Size="16" /> Sign in to save</a>
+                        <a class="detail-collection" href="/sign-in"><Icon Name="Bookmark" Size="16" /> Sign in to organize</a>
+                    </div>
+                </div>
+            </section>
+            <section class="recipe-body">
+                <div class="ingredients-panel">
+                    <div class="recipe-section-heading"><span>01</span><h2>What you'll need</h2></div>
+                    <p class="section-note">A little prep, a lot of delicious.</p>
+                    <ul class="ingredients-list">
+                        @foreach (var ingredient in recipe.Ingredients)
+                        {
+                            <li><span class="ingredient-bullet" aria-hidden="true"></span>@ingredient</li>
+                        }
+                    </ul>
+                    <div class="ingredient-tip"><span>GOOD TO KNOW</span><p>Gather and prep everything before you begin. Cooking feels easier when the little things are ready.</p></div>
+                </div>
+                <div class="instructions-panel">
+                    <div class="recipe-section-heading"><span>02</span><h2>Let's make it</h2></div>
+                    <p class="section-note">Take your time and enjoy the little things.</p>
+                    <ol class="instructions-list">
+                        @for (var i = 0; i < recipe.Instructions.Count; i++)
+                        {
+                            <li><span class="step-number">@((i + 1).ToString("00"))</span><p>@recipe.Instructions[i]</p></li>
+                        }
+                    </ol>
+                    <div class="recipe-endnote"><span class="endnote-flower"><Icon Name="Sparkles" Size="16" /></span><p>Made with care. Serve it up while it's warm.</p></div>
+                </div>
+            </section>
+            <section class="detail-footer"><span>Have a lovely meal.</span><a href="/dashboard">Back to all recipes <Icon Name="ArrowRight" Size="14" /></a></section>
+        </div>
+    </main>
+}
+
+@code {
+    [Parameter] public string Slug { get; set; } = "";
+
+    private Recipe? recipe;
+
+    protected override void OnParametersSet()
+    {
+        recipe = MockRecipes.FindBySlug(Slug);
+
+        if (recipe is null)
+        {
+            Navigation.NotFound();
+        }
+    }
+}

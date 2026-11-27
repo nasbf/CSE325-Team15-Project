@@ -1,0 +1,10 @@
+<a class="@Class" href="@Href" aria-label="Recipefy home"><span class="@MarkClass"><Icon Name="@IconName" Size="@IconSize" StrokeWidth="@StrokeWidth" /></span><span>recipefy<span class="brand-period">.</span></span></a>
+
+@code {
+    [Parameter] public string Class { get; set; } = "auth-brand";
+    [Parameter] public string MarkClass { get; set; } = "brand-mark";
+    [Parameter] public string IconName { get; set; } = "ChefHat";
+    [Parameter] public int IconSize { get; set; } = 20;
+    [Parameter] public double StrokeWidth { get; set; } = 2;
+    [Parameter] public string Href { get; set; } = "/";
+}

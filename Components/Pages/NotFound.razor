@@ -1,5 +1,21 @@
-﻿@page "/not-found"
+@page "/not-found"
 @layout MainLayout
 
-<h3>Not Found</h3>
-<p>Sorry, the content you are looking for does not exist.</p>
+<PageTitle>Not found — Recipefy</PageTitle>
+
+<main class="auth-page">
+    <div class="auth-top">
+        <Brand Class="auth-brand" IconName="CookingPot" />
+        <a class="auth-back" href="/"><Icon Name="ArrowLeft" Size="15" /> Back to your kitchen</a>
+    </div>
+    <div class="auth-layout" style="grid-template-columns: 1fr;">
+        <section class="auth-form-panel">
+            <div class="auth-form-inner" style="text-align: center;">
+                <span class="auth-kicker" style="justify-content: center;"><Icon Name="Sparkles" Size="14" /> NOTHING COOKING HERE</span>
+                <h1>We couldn't find that page.</h1>
+                <p class="auth-intro">Sorry, the content you are looking for does not exist.</p>
+                <a class="auth-submit" href="/dashboard">Back to your recipe box<Icon Name="ArrowRight" Size="16" /></a>
+            </div>
+        </section>
+    </div>
+</main>

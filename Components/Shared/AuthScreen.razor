@@ -1,0 +1,44 @@
+<main class="auth-page">
+    <div class="auth-top">
+        <Brand Class="auth-brand" IconName="CookingPot" />
+        <a class="auth-back" href="/"><Icon Name="ArrowLeft" Size="15" /> Back to your kitchen</a>
+    </div>
+    <div class="auth-layout">
+        <section class="auth-form-panel">
+            <div class="auth-form-inner">
+                <span class="auth-kicker"><Icon Name="Sparkles" Size="14" /> A FRESH START, EVERY DAY</span>
+                <h1>@(IsSignUp ? "Make yourself at home." : "Welcome back.")</h1>
+                <p class="auth-intro">@(IsSignUp ? "Your favorite recipes, right where you left them." : "Pull up a chair. Your kitchen is right here.")</p>
+                @* Mock only: no authentication yet, so the form's primary action just navigates to the dashboard. *@
+                <form class="auth-form" onsubmit="return false">
+                    @if (IsSignUp)
+                    {
+                        <label class="auth-field"><span>Your name</span><input autocomplete="name" name="name" placeholder="How should we call you?" /></label>
+                    }
+                    <label class="auth-field"><span>Email address</span><span class="auth-input-wrap"><Icon Name="Mail" Size="16" /><input autocomplete="email" name="email" type="email" placeholder="you@example.com" /></span></label>
+                    <label class="auth-field"><span>Password</span><span class="auth-input-wrap"><Icon Name="LockKeyhole" Size="16" /><input autocomplete="@(IsSignUp ? "new-password" : "current-password")" name="password" type="password" placeholder="@(IsSignUp ? "At least 8 characters" : "Enter your password")" /><button type="button" aria-label="Show password"><Icon Name="Eye" Size="16" /></button></span></label>
+                    @if (!IsSignUp)
+                    {
+                        <div class="auth-options"><label class="remember-option"><input type="checkbox" /> Keep me signed in</label><a class="auth-text-button" href="/sign-in">Forgot password?</a></div>
+                    }
+                    <a class="auth-submit" href="/dashboard">@(IsSignUp ? "Create your account" : "Sign in to Recipefy")<Icon Name="ArrowRight" Size="16" /></a>
+                </form>
+                <p class="auth-switch">@(IsSignUp ? "Already have an account?" : "New to Recipefy?") <a href="@(IsSignUp ? "/sign-in" : "/sign-up")">@(IsSignUp ? "Sign in" : "Create an account")</a></p>
+                <p class="auth-terms">By continuing, you agree to our <a href="#terms">Terms</a> and <a href="#privacy">Privacy Policy</a>.</p>
+            </div>
+        </section>
+        <aside class="auth-aside">
+            <div class="auth-aside-copy">
+                <span class="auth-quote-mark">“</span>
+                <blockquote>Good food is all the sweeter when shared with good people.</blockquote>
+                <p>A little more joy, one recipe at a time.</p>
+                <div class="auth-ornament"><span></span><span></span><span></span></div>
+            </div>
+            <div class="auth-aside-foot"><span>YOUR KITCHEN, YOUR WAY</span><span>EST. WITH LOVE</span></div>
+        </aside>
+    </div>
+</main>
+
+@code {
+    [Parameter] public bool IsSignUp { get; set; }
+}

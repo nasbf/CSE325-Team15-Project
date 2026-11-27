@@ -1,7 +1,73 @@
-﻿@page "/"
+@page "/"
 
-<PageTitle>Home</PageTitle>
+<PageTitle>Recipefy — Your Recipe Kitchen</PageTitle>
 
-<h1>Hello, world!</h1>
+<main class="landing-page">
+    <header class="landing-header">
+        <Brand Class="landing-brand" MarkClass="landing-brand-mark" IconName="CookingPot" IconSize="19" />
+        <nav class="landing-nav" aria-label="Main navigation"><a href="#the-good-stuff">The good stuff</a><a href="#recipes-to-love">Recipes to love</a></nav>
+        <div class="landing-header-actions">
+            <a class="landing-signin" href="/sign-in">Sign in</a>
+            <a class="landing-header-cta" href="/sign-up">Join Recipefy <Icon Name="ArrowRight" Size="14" /></a>
+        </div>
+    </header>
 
-Welcome to your new app.
+    <section class="landing-hero">
+        <div class="landing-hero-copy">
+            <span class="landing-kicker"><Icon Name="Sparkles" Size="14" /> A LITTLE MORE JOY IN THE EVERYDAY</span>
+            <h1>Your recipes.<br />Your <em>little rituals.</em></h1>
+            <p>Keep the dishes you love close, find a new favorite, and make the everyday feel a little more delicious.</p>
+            <div class="landing-hero-actions">
+                <a class="landing-primary" href="/dashboard">Explore the recipe box <Icon Name="ArrowRight" Size="16" /></a>
+                <a class="landing-secondary" href="/sign-up">Make it yours</a>
+            </div>
+            <div class="landing-note"><span class="landing-note-icon"><Icon Name="ChefHat" Size="15" /></span><span>A cozy corner for everything you love to cook.</span></div>
+        </div>
+        <div class="landing-hero-visual">
+            <div class="landing-image-frame"><img src="/recipes/hero-pasta.png" alt="Lemon ricotta pasta topped with tomatoes and fresh basil" /></div>
+            <div class="landing-image-caption">
+                <span class="landing-caption-icon"><Icon Name="Clock3" Size="16" /></span>
+                <span><small>TONIGHT'S KIND OF DINNER</small><strong>Lemon ricotta pasta</strong></span>
+                <span class="landing-caption-time">25 min</span>
+            </div>
+            <span class="landing-visual-stamp" aria-hidden="true">made<br />with love</span>
+        </div>
+    </section>
+
+    <section class="landing-benefits" id="the-good-stuff" aria-label="What you can do with Recipefy">
+        <article class="landing-benefit"><span class="landing-benefit-icon"><Icon Name="Bookmark" Size="17" /></span><div><h2>Keep the keepers</h2><p>Save the recipes worth coming back to, all in one lovely place.</p></div></article>
+        <article class="landing-benefit"><span class="landing-benefit-icon benefit-icon-orange"><Icon Name="Sparkles" Size="17" /></span><div><h2>Find your next favorite</h2><p>A little inspiration for weeknights, slow mornings, and everything between.</p></div></article>
+        <article class="landing-benefit"><span class="landing-benefit-icon benefit-icon-tan"><Icon Name="CookingPot" Size="17" /></span><div><h2>Make it your own</h2><p>Build a personal recipe box around the food and moments you love.</p></div></article>
+    </section>
+
+    <section class="landing-recipes" id="recipes-to-love">
+        <div class="landing-section-heading">
+            <div><span class="landing-kicker">A FEW GOOD THINGS</span><h2>A little inspiration<br />for your table.</h2></div>
+            <a class="landing-view-all" href="/dashboard">Explore all recipes <Icon Name="ArrowRight" Size="15" /></a>
+        </div>
+        <div class="landing-recipe-grid">
+            @foreach (var recipe in MockRecipes.All.Take(3))
+            {
+                <a class="landing-recipe-card" href="/recipes/@recipe.Slug">
+                    <div class="landing-recipe-photo"><img src="@recipe.Image" alt="@recipe.Title" loading="lazy" /><span>@recipe.Category</span></div>
+                    <div class="landing-recipe-info">
+                        <div><h3>@recipe.Title</h3><p><Icon Name="Clock3" Size="13" />@recipe.Time<span>·</span>@recipe.Tag</p></div>
+                        <span class="landing-card-arrow"><Icon Name="ArrowRight" Size="15" /></span>
+                    </div>
+                </a>
+            }
+        </div>
+    </section>
+
+    <section class="landing-final-cta">
+        <div><span class="landing-kicker">YOUR KITCHEN, YOUR WAY</span><h2>Make space for<br /><em>something lovely.</em></h2></div>
+        <div class="landing-final-copy"><p>Start collecting the recipes that turn into traditions.</p><a class="landing-primary" href="/sign-up">Create your recipe box <Icon Name="ArrowRight" Size="16" /></a></div>
+        <span class="landing-final-sparkle" aria-hidden="true"><Icon Name="Sparkles" Size="27" /></span>
+    </section>
+
+    <footer class="landing-footer">
+        <Brand Class="landing-brand" MarkClass="landing-brand-mark" IconName="CookingPot" IconSize="17" />
+        <span>A little extra olive oil, always.</span>
+        <span>© 2026 RECIPEFY</span>
+    </footer>
+</main>
