@@ -3,7 +3,7 @@
 
 <h1> Create your Recipefy Account</h1>
 <p> Please fill out the form below to create your account.</p>
-<EditForm Model="registerModel" OnInvalidSubmit="RegisterUser">
+<EditForm Model="registerModel" OnValidSubmit="RegisterUser">
     <div>
         <label>Username</label>
         <InputText @bind-Value="registerModel.Username" />
@@ -28,5 +28,8 @@
 
 @code  {
     private RegisterModel registerModel = new();
+
+    // TODO: create the user with Identity's UserManager once registration is wired up.
+    private Task RegisterUser() => Task.CompletedTask;
 }
 
