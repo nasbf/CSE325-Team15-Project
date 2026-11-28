@@ -486,3 +486,5 @@ bin/
 obj/
 recipefy.db
 .gitworktress/
+recipefy.db-shm
+recipefy.db-wal
