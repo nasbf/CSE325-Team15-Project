@@ -1,3 +1,6 @@
+@using Microsoft.AspNetCore.Components.Authorization
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
 @page "/dashboard"
 
 <PageTitle>Your kitchen — Recipefy</PageTitle>
@@ -23,7 +26,7 @@
             <p class="weekly-copy">Get a fresh meal idea every week.</p>
             <a href="/dashboard">Explore ideas <span>↗</span></a>
         </div>
-        <a class="profile-row" href="/"><span class="avatar">M</span><span class="profile-copy"><strong>Marina Chen</strong><small>Home cook</small></span><Icon Name="Ellipsis" Size="18" /></a>
+        <a class="profile-row" href="/"><span class="avatar">@userName[0].ToString().ToUpper()</span><span class="profile-copy"><strong>@userName</strong><small>Home cook</small></span><Icon Name="Ellipsis" Size="18" /></a>
     </aside>
 
     <section class="main-area">
@@ -32,14 +35,14 @@
             <div class="top-actions">
                 <button type="button" class="icon-action" aria-label="Notifications"><Icon Name="Bell" Size="18" /><i></i></button>
                 <button type="button" class="help-button"><Icon Name="CircleHelp" Size="16" /> Help</button>
-                <span class="top-avatar">M</span>
+                <span class="top-avatar">@userName[0].ToString().ToUpper()</span>
             </div>
         </header>
         <div class="content-wrap">
             <section class="welcome-row">
                 <div>
                     <div class="eyebrow"><Icon Name="Sparkles" Size="13" /> TUESDAY, MAY 21, 2024</div>
-                    <h1>Good morning, Marina</h1>
+                    <h1>Good morning, @userName</h1>
                     <p class="welcome-sub">Something delicious is always within reach.</p>
                 </div>
                 <a class="primary-button" href="/recipes/new"><Icon Name="Plus" Size="17" /> Add a recipe</a>
@@ -100,4 +103,17 @@
 
 @code {
     private static readonly string[] Categories = ["All recipes", "Breakfast", "Lunch", "Dinner", "Dessert"];
+    private string userName = "Alex"; // Default name in case user is not authenticated
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity is not null && user.Identity.IsAuthenticated)
+        {
+            userName = user.Identity.Name ?? "Alex";
+        }
+    }
+
 }

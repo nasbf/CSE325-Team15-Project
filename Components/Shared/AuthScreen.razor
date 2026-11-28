@@ -1,3 +1,11 @@
+@using Recipefy.Models
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<IdentityUser> UserManager
+@inject NavigationManager Navigation
+@inject SignInManager<IdentityUser> SignInManager
+
+
+
 <main class="auth-page">
     <div class="auth-top">
         <Brand Class="auth-brand" IconName="CookingPot" />
@@ -10,19 +18,120 @@
                 <h1>@(IsSignUp ? "Make yourself at home." : "Welcome back.")</h1>
                 <p class="auth-intro">@(IsSignUp ? "Your favorite recipes, right where you left them." : "Pull up a chair. Your kitchen is right here.")</p>
                 @* Mock only: no authentication yet, so the form's primary action just navigates to the dashboard. *@
-                <form class="auth-form" onsubmit="return false">
-                    @if (IsSignUp)
-                    {
-                        <label class="auth-field"><span>Your name</span><input autocomplete="name" name="name" placeholder="How should we call you?" /></label>
-                    }
-                    <label class="auth-field"><span>Email address</span><span class="auth-input-wrap"><Icon Name="Mail" Size="16" /><input autocomplete="email" name="email" type="email" placeholder="you@example.com" /></span></label>
-                    <label class="auth-field"><span>Password</span><span class="auth-input-wrap"><Icon Name="LockKeyhole" Size="16" /><input autocomplete="@(IsSignUp ? "new-password" : "current-password")" name="password" type="password" placeholder="@(IsSignUp ? "At least 8 characters" : "Enter your password")" /><button type="button" aria-label="Show password"><Icon Name="Eye" Size="16" /></button></span></label>
-                    @if (!IsSignUp)
-                    {
-                        <div class="auth-options"><label class="remember-option"><input type="checkbox" /> Keep me signed in</label><a class="auth-text-button" href="/sign-in">Forgot password?</a></div>
-                    }
-                    <a class="auth-submit" href="/dashboard">@(IsSignUp ? "Create your account" : "Sign in to Recipefy")<Icon Name="ArrowRight" Size="16" /></a>
-                </form>
+                @if (IsSignUp)
+                {
+                    <EditForm Model="registerModel"
+                            OnValidSubmit="RegisterUser"
+                            FormName="SignUpForm"
+                            class="auth-form">
+
+                        <DataAnnotationsValidator />
+
+                        @if (!string.IsNullOrEmpty(errorMessage))
+                        {
+                            <p class="text-danger">@errorMessage</p>
+                        }
+
+                        <label class="auth-field">
+                            <span>Your name</span>
+                            <InputText @bind-Value="registerModel.Username"
+                                    autocomplete="name"
+                                    placeholder="How should we call you?" />
+                            <ValidationMessage For="@(() => registerModel.Username)" />
+                        </label>
+
+                        <label class="auth-field">
+                            <span>Email address</span>
+                            <span class="auth-input-wrap">
+                                <Icon Name="Mail" Size="16" />
+                                <InputText @bind-Value="registerModel.Email"
+                                        autocomplete="email"
+                                        type="email"
+                                        placeholder="you@example.com" />
+                            </span>
+                            <ValidationMessage For="@(() => registerModel.Email)" />
+                        </label>
+
+                        <label class="auth-field">
+                            <span>Password</span>
+                            <span class="auth-input-wrap">
+                                <Icon Name="LockKeyhole" Size="16" />
+                                <InputText @bind-Value="registerModel.Password"
+                                        autocomplete="new-password"
+                                        type="password"
+                                        placeholder="At least 6 characters" />
+                            </span>
+                            <ValidationMessage For="@(() => registerModel.Password)" />
+                        </label>
+
+                        <label class="auth-field">
+                            <span>Confirm password</span>
+                            <InputText @bind-Value="registerModel.ConfirmPassword"
+                                    type="password"
+                                    placeholder="Repeat your password" />
+                            <ValidationMessage For="@(() => registerModel.ConfirmPassword)" />
+                        </label>
+
+                        <button class="auth-submit" type="submit">
+                            Create your account
+                            <Icon Name="ArrowRight" Size="16" />
+                        </button>
+
+                    </EditForm>
+                }
+                
+                else
+
+                {
+                    <EditForm Model="loginModel"
+                            OnValidSubmit="LoginUser"
+                            FormName="SignInForm"
+                            class="auth-form">
+
+                        <DataAnnotationsValidator />
+
+                        
+                            <label class="auth-field">
+                                <span>Email address</span>
+                                <span class="auth-input-wrap">
+                                    <Icon Name="Mail" Size="16" />
+                                    <InputText @bind-Value="loginModel.Email"
+                                    autocomplete="email"
+                                    type="email"
+                                    placeholder="you@example.com" />
+                            <ValidationMessage For="@(() => loginModel.Email)" />
+                                </span>
+                            </label>
+
+                            <label class="auth-field">
+                                <span>Password</span>
+                                <span class="auth-input-wrap">
+                                    <Icon Name="LockKeyhole" Size="16" />
+                                    <InputText @bind-Value="loginModel.Password"
+                                            autocomplete="current-password"
+                                            type="password"
+                                            placeholder="Enter your password" />
+                                    <ValidationMessage For="@(() => loginModel.Password)" />
+                                </span>
+                            </label>
+                            @if (!string.IsNullOrEmpty(loginErrorMessage))
+                            {
+                                <p class="text-danger">@loginErrorMessage</p>
+                            }
+                            <div class="auth-options">
+                                <label class="remember-option">
+                                    <input type="checkbox" /> Keep me signed in
+                                </label>
+                                <a class="auth-text-button" href="/sign-in">Forgot password?</a>
+                            </div>
+
+                            <button class="auth-submit" type="submit">
+                                Sign in to Recipefy
+                                <Icon Name="ArrowRight" Size="16" />
+                            </button>
+                        
+                    </EditForm>}
+
                 <p class="auth-switch">@(IsSignUp ? "Already have an account?" : "New to Recipefy?") <a href="@(IsSignUp ? "/sign-in" : "/sign-up")">@(IsSignUp ? "Sign in" : "Create an account")</a></p>
                 <p class="auth-terms">By continuing, you agree to our <a href="#terms">Terms</a> and <a href="#privacy">Privacy Policy</a>.</p>
             </div>
@@ -41,4 +150,71 @@
 
 @code {
     [Parameter] public bool IsSignUp { get; set; }
+    [SupplyParameterFromForm(FormName = "SignUpForm")]
+    private RegisterModel registerModel { get; set; } = default!;
+    [SupplyParameterFromForm(FormName = "SignInForm")]
+    private LoginModel loginModel { get; set; } = default!;
+
+    private string? loginErrorMessage;
+    private string? errorMessage;
+
+    protected override void OnInitialized()
+    {
+        registerModel ??= new();
+        loginModel ??= new();
+    }
+    private async Task RegisterUser()
+    {
+        var user = new IdentityUser
+        {
+            UserName = registerModel.Username,
+            Email = registerModel.Email
+        };
+
+        var result = await UserManager.CreateAsync(
+            user,
+            registerModel.Password
+        );
+
+        if (result.Succeeded)
+        {
+            Navigation.NavigateTo("/sign-in");
+        }
+        else
+        {
+            errorMessage = string.Join(
+                ", ",
+                result.Errors.Select(error => error.Description)
+            );
+        }
+    }
+    private async Task LoginUser()
+{
+    // Buscar al usuario por su correo electrónico
+    var user = await UserManager.FindByEmailAsync(loginModel.Email);
+
+    if (user is null)
+    {
+        loginErrorMessage = "Invalid email or password.";
+        return;
+    }
+
+    // Comprobar la contraseña e iniciar sesión
+    var result = await SignInManager.PasswordSignInAsync(
+        user,
+        loginModel.Password,
+        isPersistent: false,
+        lockoutOnFailure: false
+    );
+
+    if (result.Succeeded)
+    {
+        Navigation.NavigateTo("/dashboard");
+    }
+    else
+    {
+        loginErrorMessage = "Invalid email or password.";
+    }
+}
+
 }

@@ -1,9 +1,20 @@
 @page "/register"
 @using Recipefy.Models
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<IdentityUser> UserManager
+@inject NavigationManager Navigation
 
 <h1> Create your Recipefy Account</h1>
 <p> Please fill out the form below to create your account.</p>
-<EditForm Model="registerModel" OnValidSubmit="RegisterUser">
+<EditForm Model="registerModel" OnValidSubmit="RegisterUser" FormName="RegisterForm">
+
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    @if (!string.IsNullOrEmpty(errorMessage))
+    {
+        <p class="text-danger">@errorMessage</p>
+    }
+
     <div>
         <label>Username</label>
         <InputText @bind-Value="registerModel.Username" />
@@ -29,7 +40,34 @@
 @code  {
     private RegisterModel registerModel = new();
 
-    // TODO: create the user with Identity's UserManager once registration is wired up.
-    private Task RegisterUser() => Task.CompletedTask;
+    private string? errorMessage;
+
+    private async Task RegisterUser()
+    {
+        var user = new IdentityUser
+        {
+            UserName = registerModel.Username,
+            Email = registerModel.Email
+        };
+
+        var result = await UserManager.CreateAsync(
+            user,
+            registerModel.Password
+        );
+
+        if (result.Succeeded)
+        {
+            Navigation.NavigateTo("/sign-in");
+        }
+        else
+        {
+            errorMessage = string.Join(
+                ", ",
+                result.Errors.Select(error => error.Description)
+            );
+        }
+    }
 }
+
+
 
